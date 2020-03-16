@@ -39,7 +39,7 @@ class Auth {
   public handleAuthentication = () =>
     new Promise((resolve, reject) => {
       this.auth0 &&
-        this.auth0.parseHash((err, authResult) => {
+        this.auth0.parseHash(async (err, authResult) => {
           if (authResult && authResult.accessToken && authResult.idToken) {
             this.setSession(authResult);
 
