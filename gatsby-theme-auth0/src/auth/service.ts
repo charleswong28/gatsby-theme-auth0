@@ -11,12 +11,19 @@ export interface SessionState {
   idToken?: string;
 }
 
+export interface AuthResult {
+  idTokenPayload?: auth0.Auth0UserProfile;
+  accessToken?: string;
+  idToken?: string;
+}
+
 class Auth {
   private accessToken?: string;
   private idToken?: string;
   private userProfile?: auth0.Auth0UserProfile;
 
   public sessionStateCallback = (_state: SessionState) => {};
+  public onAuthenticated = async (authResult: AuthResult) => {};
 
   private auth0 = process.env.AUTH0_DOMAIN
     ? new auth0.WebAuth(config)
@@ -35,6 +42,8 @@ class Auth {
         this.auth0.parseHash((err, authResult) => {
           if (authResult && authResult.accessToken && authResult.idToken) {
             this.setSession(authResult);
+
+            await onAuthenticated(authResult);
 
             const postLoginUrl = localStorage.getItem("postLoginUrl");
             localStorage.removeItem("postLoginUrl");

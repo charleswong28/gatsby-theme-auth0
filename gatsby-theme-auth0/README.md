@@ -68,6 +68,31 @@ export default () => {
 };
 ```
 
+Using onAuthenticated callback to call another service before being redirected.
+
+```js
+import React from "react";
+import { AuthService, useAuth } from "gatsby-theme-auth0";
+
+export default () => {
+  const { isLoggedIn, profile } = useAuth({
+    onAuthenticated: (authResult) => {
+      console.log('I am authenticated.');
+    }
+  });
+  return (
+    <div>
+      {profile && <p>Hello {profile.name}</p>}
+      {isLoggedIn ? (
+        <button onClick={AuthService.logout}>Logout</button>
+      ) : (
+        <button onClick={AuthService.login}>Login</button>
+      )}
+    </div>
+  );
+};
+```
+
 ### Theme options
 
 | Key            | Default                  | Required | Description                     |

@@ -1,10 +1,14 @@
 import * as React from "react";
-import auth, { SessionState } from "../auth/service";
+import auth, { SessionState, AuthResult } from "../auth/service";
 
-const useAuth = (stateCallback = (_state: SessionState) => {}) => {
+const useAuth = ({
+  stateCallback = (_state: SessionState) => {},
+  onAuthenticated: async (authResult: AuthResult) => {};
+}) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isLoggedIn, setIsLoggedIn] = React.useState(auth.isAuthenticated());
   const [profile, setProfile] = React.useState(auth.getUserProfile());
+  auth.onAuthenticated = onAuthenticated;
 
   React.useEffect(() => {
     // Override `sessionStateCallback` in auth service
