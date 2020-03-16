@@ -1,6 +1,6 @@
 import * as React from "react";
 import { WindowLocation } from "@reach/router";
-import AuthService from "../../auth/service";
+import AuthService from "../auth/service";
 import Spinner from "./spinner";
 
 export interface Props {
