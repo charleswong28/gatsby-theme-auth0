@@ -94,36 +94,6 @@ src/gatsby-theme-auth0/components/callback.js
 
 Here's a demo of that [`demos/custom/src/gatsby-theme-auth0/components/callback.js`](https://github.com/epilande/gatsby-theme-auth0/blob/master/demos/custom/src/gatsby-theme-auth0/components/callback.tsx)
 
-You can also use onAuthenticated callback to call another service before being redirected when shadowing callback page.
-
-src/gatsby-theme-auth0/pages/auth/callback.js
-```js
-import * as React from "react";
-import { WindowLocation } from "@reach/router";
-import { AuthService } from "gatsby-theme-auth0";
-
-interface Props {
-  location: WindowLocation;
-}
-
-const CallbackPage: React.FunctionComponent<Props> = props => {
-  const { location } = props;
-
-  React.useEffect(() => {
-    if (/access_token|id_token|error/.test(location.hash)) {
-      AuthService.handleAuthentication({
-        onAuthenticated: (authResult) => { console.log('I am authenticated!'); }
-      });
-    }
-  }, []);
-
-  return <div>Loading</div>;
-};
-
-export default CallbackPage;
-
-```
-
 ## Demos
 
 - **Minimal:** [Demo](https://gatsby-theme-auth0.netlify.com/) | [Code](https://github.com/epilande/gatsby-theme-auth0/tree/master/demos/minimal)

@@ -29,23 +29,22 @@ class Auth {
     this.auth0 && this.auth0.authorize();
   };
 
-  public handleAuthentication = ({ onAuthenticated }) =>
+  public handleAuthentication = ({ redirectAfterAuthenticated } = {}) =>
     new Promise((resolve, reject) => {
       this.auth0 &&
         this.auth0.parseHash(async (err, authResult) => {
           if (authResult && authResult.accessToken && authResult.idToken) {
             this.setSession(authResult);
 
-            if (onAuthenticated) {
-              await onAuthenticated(authResult);
-            }
-
             const postLoginUrl = localStorage.getItem("postLoginUrl");
             localStorage.removeItem("postLoginUrl");
-            if (postLoginUrl) {
+            if (redirectAfterAuthenticated === true && postLoginUrl) {
               navigate(postLoginUrl);
             }
-            return resolve(authResult);
+            return resolve({
+              ...authResult,
+              postLoginUrl,
+            });
           } else if (err) {
             return reject(err);
           }
