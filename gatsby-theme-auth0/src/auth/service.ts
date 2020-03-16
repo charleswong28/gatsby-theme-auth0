@@ -11,19 +11,12 @@ export interface SessionState {
   idToken?: string;
 }
 
-export interface AuthResult {
-  idTokenPayload?: auth0.Auth0UserProfile;
-  accessToken?: string;
-  idToken?: string;
-}
-
 class Auth {
   private accessToken?: string;
   private idToken?: string;
   private userProfile?: auth0.Auth0UserProfile;
 
   public sessionStateCallback = (_state: SessionState) => {};
-  public onAuthenticated = async (authResult: AuthResult) => {};
 
   private auth0 = process.env.AUTH0_DOMAIN
     ? new auth0.WebAuth(config)
@@ -36,7 +29,7 @@ class Auth {
     this.auth0 && this.auth0.authorize();
   };
 
-  public handleAuthentication = () =>
+  public handleAuthentication = (onAuthenticated) =>
     new Promise((resolve, reject) => {
       this.auth0 &&
         this.auth0.parseHash(async (err, authResult) => {

@@ -68,31 +68,6 @@ export default () => {
 };
 ```
 
-Using onAuthenticated callback to call another service before being redirected.
-
-```js
-import React from "react";
-import { AuthService, useAuth } from "gatsby-theme-auth0";
-
-export default () => {
-  const { isLoggedIn, profile } = useAuth({
-    onAuthenticated: (authResult) => {
-      console.log('I am authenticated.');
-    }
-  });
-  return (
-    <div>
-      {profile && <p>Hello {profile.name}</p>}
-      {isLoggedIn ? (
-        <button onClick={AuthService.logout}>Logout</button>
-      ) : (
-        <button onClick={AuthService.login}>Login</button>
-      )}
-    </div>
-  );
-};
-```
-
 ### Theme options
 
 | Key            | Default                  | Required | Description                     |
@@ -118,6 +93,37 @@ src/gatsby-theme-auth0/components/callback.js
 ```
 
 Here's a demo of that [`demos/custom/src/gatsby-theme-auth0/components/callback.js`](https://github.com/epilande/gatsby-theme-auth0/blob/master/demos/custom/src/gatsby-theme-auth0/components/callback.tsx)
+
+You can also use onAuthenticated callback to call another service before being redirected when shadowing callback page.
+
+src/gatsby-theme-auth0/pages/auth/callback.js
+```js
+import * as React from "react";
+import { WindowLocation } from "@reach/router";
+import AuthService from "../../auth/service";
+import Callback from "../../components/callback";
+
+interface Props {
+  location: WindowLocation;
+}
+
+const CallbackPage: React.FunctionComponent<Props> = props => {
+  const { location } = props;
+
+  React.useEffect(() => {
+    if (/access_token|id_token|error/.test(location.hash)) {
+      AuthService.handleAuthentication({
+        onAuthenticated: () => { console.log('I am authenticated!'); }
+      });
+    }
+  }, []);
+
+  return <Callback />;
+};
+
+export default CallbackPage;
+
+```
 
 ## Demos
 
