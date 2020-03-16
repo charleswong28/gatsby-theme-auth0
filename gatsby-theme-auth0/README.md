@@ -100,8 +100,7 @@ src/gatsby-theme-auth0/pages/auth/callback.js
 ```js
 import * as React from "react";
 import { WindowLocation } from "@reach/router";
-import AuthService from "../../auth/service";
-import Callback from "../../components/callback";
+import { AuthService } from "gatsby-theme-auth0";
 
 interface Props {
   location: WindowLocation;
@@ -113,12 +112,12 @@ const CallbackPage: React.FunctionComponent<Props> = props => {
   React.useEffect(() => {
     if (/access_token|id_token|error/.test(location.hash)) {
       AuthService.handleAuthentication({
-        onAuthenticated: () => { console.log('I am authenticated!'); }
+        onAuthenticated: (authResult) => { console.log('I am authenticated!'); }
       });
     }
   }, []);
 
-  return <Callback />;
+  return <div>Loading</div>;
 };
 
 export default CallbackPage;
