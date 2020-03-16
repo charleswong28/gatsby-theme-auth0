@@ -29,14 +29,16 @@ class Auth {
     this.auth0 && this.auth0.authorize();
   };
 
-  public handleAuthentication = (onAuthenticated) =>
+  public handleAuthentication = ({ onAuthenticated }) =>
     new Promise((resolve, reject) => {
       this.auth0 &&
         this.auth0.parseHash(async (err, authResult) => {
           if (authResult && authResult.accessToken && authResult.idToken) {
             this.setSession(authResult);
 
-            await onAuthenticated(authResult);
+            if (onAuthenticated) {
+              await onAuthenticated(authResult);
+            }
 
             const postLoginUrl = localStorage.getItem("postLoginUrl");
             localStorage.removeItem("postLoginUrl");
