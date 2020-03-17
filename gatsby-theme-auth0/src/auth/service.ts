@@ -11,14 +11,14 @@ export interface SessionState {
   idToken?: string;
 }
 
+console.log('process.env', process.env);
+
 class Auth {
   private accessToken?: string;
   private idToken?: string;
   private userProfile?: auth0.Auth0UserProfile;
 
   public sessionStateCallback = (_state: SessionState) => {};
-
-  console.log('process.env', process.env);
   private auth0 = isBrowser && process.env.AUTH0_DOMAIN
     ? new auth0.WebAuth(config)
     : undefined;
