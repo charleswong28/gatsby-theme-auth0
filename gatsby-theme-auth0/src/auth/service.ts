@@ -11,7 +11,9 @@ export interface SessionState {
   idToken?: string;
 }
 
-console.log('process.env', process.env);
+console.log('process.env.AUTH0_DOMAIN', process.env.AUTH0_DOMAIN);
+console.log('process.env.GATSBY_AUTH0_DOMAIN', process.env.GATSBY_AUTH0_DOMAIN);
+console.log('config', config);
 
 class Auth {
   private accessToken?: string;
@@ -19,7 +21,7 @@ class Auth {
   private userProfile?: auth0.Auth0UserProfile;
 
   public sessionStateCallback = (_state: SessionState) => {};
-  private auth0 = isBrowser && process.env.AUTH0_DOMAIN
+  private auth0 = isBrowser && config.domain
     ? new auth0.WebAuth(config)
     : undefined;
 
