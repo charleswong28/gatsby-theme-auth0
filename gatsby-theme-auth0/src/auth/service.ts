@@ -18,7 +18,7 @@ class Auth {
 
   public sessionStateCallback = (_state: SessionState) => {};
 
-  private auth0 = process.env.AUTH0_DOMAIN
+  private auth0 = isBrowser && process.env.AUTH0_DOMAIN
     ? new auth0.WebAuth(config)
     : undefined;
 
