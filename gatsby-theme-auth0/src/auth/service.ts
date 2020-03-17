@@ -71,8 +71,10 @@ class Auth {
     });
   }
 
-  public checkSession = () =>
-    new Promise(resolve => {
+  public checkSession = () => {
+    console.log('this.auth0', this.auth0);
+    console.log('config', config);
+    return new Promise(resolve => {
       this.auth0 &&
         this.auth0.checkSession({}, (err, authResult) => {
           if (authResult && authResult.accessToken && authResult.idToken) {
@@ -87,6 +89,7 @@ class Auth {
           return resolve();
         });
     });
+  }
 
   public localLogout = () => {
     if (!isBrowser) return;
