@@ -18,7 +18,7 @@ exports.onCreateWebpackConfig = ({ plugins, actions }, options) => {
     scope,
   } = options;
 
-  console.log('in plugin config domain', domain);
+  console.log('in plugin config redirectUri', redirectUri);
   checkRequiredCreds({ domain, clientID, redirectUri });
 
   actions.setWebpackConfig({

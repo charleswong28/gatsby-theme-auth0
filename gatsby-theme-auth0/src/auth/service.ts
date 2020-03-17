@@ -11,10 +11,6 @@ export interface SessionState {
   idToken?: string;
 }
 
-console.log('process.env.AUTH0_DOMAIN', process.env.AUTH0_DOMAIN);
-console.log('process.env.GATSBY_AUTH0_DOMAIN', process.env.GATSBY_AUTH0_DOMAIN);
-console.log('config', config);
-
 class Auth {
   private accessToken?: string;
   private idToken?: string;
@@ -25,11 +21,11 @@ class Auth {
     ? new auth0.WebAuth(config)
     : undefined;
 
-  public login = () => {
+  public login = (options) => {
     if (!isBrowser) return;
     // Save postLoginUrl so we can redirect user back to where they left off after login screen
     localStorage.setItem("postLoginUrl", window.location.pathname);
-    this.auth0 && this.auth0.authorize();
+    this.auth0 && this.auth0.authorize(options);
   };
 
   public handleAuthentication = ({ redirectAfterAuthenticated } = {}) =>
